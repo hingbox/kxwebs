@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!--引入js的时候切记 不需要加 springboot的默认文件名称-->
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.pagination.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-modal.js}"></script>
+    <script type="text/javascript">
+        window.onload=function () {
+            $("tr:odd").css("background","pink");
+        }
+
+    </script>
+    <title>Title</title>
+    <style type="text/css">
+        table{
+            border-collapse: collapse;
+        }
+    </style>
+
+</head>
+<body>
+<table  width="70%" border="1" align="center" id="list">
+    <caption><h1 style="height: 50px;line-height5:0px;border: 1px">url列表</h1>
+        <!--按区域查询 <select name="district" id="ourSelect">-->
+            <!--<option value="0">不限</option>-->
+            <!--<option value="西城区">西城区</option>-->
+            <!--<option value="东城区">东城区</option>-->
+            <!--<option value="海淀区">海淀区</option>-->
+            <!--<option value="丰台区">丰台区</option>-->
+        <!--</select>-->
+        <!--<input type="text" id="url"/>-->
+        <!--<input type="button" onclick="myselect()" value="查找"/>-->
+        <input type="text" id="url"/>
+        <input type="button" onclick="fenxi()" value="分析"/>
+        <a href="/goAddPage">添加</a>
+    </caption>
+    <thead>
+    <tr class="t_head">
+        <th>序号</th>
+        <th>url</th>
+        <!--<th>检测时间</th>-->
+        <!--<th>PM10数据</th>-->
+        <!--<th>PM2.5数据局</th>-->
+        <!--<th>监测站</th>-->
+    </tr>
+    </thead>
+    <tbody id="list-content">
+    </tbody>
+</table>
+<div  class="pagination" id="pagination"></div>
+<div  id="isOK"></div>
+<script type="text/javascript">
+    $(function () {
+        $("#update").hide();
+    });
+    load();  //默认初始化
+    /*点击查询的触发事件*/
+    function  load() {
+        $.ajax({
+            url: "/findAll",
+            type: "post",
+            success: function (data) {
+                //清空数据
+                $("#list-content").html('');
+                //追加数据
+                $.each(data, function (i, dom) {
+                    //一个dom就是一个新闻对象
+//                    $("#list-content").append("<tr><td>"+ dom.id + "</td><td><a onclick='update("+dom.id+")'>"+dom.district+"</a>" + "</td><td>" + dom.monitorTime + "</td><td>" + dom.pm10 + "</td><td >" + dom.pm25 + "</td><td>"+
+//                            dom.monitoringStation+"</td></tr>");
+
+                    $("#list-content").append("<tr><td>"+ dom.id + "</td><td>"+dom.url+ "</td></tr>");
+                });
+                $("tr:odd").css("background","pink");
+            }
+        });
+    };
+
+    function myselect() {
+        $.ajax({
+            url: "/selectByCondition",
+            type: "post",
+            data:{"url":$("#url").val()},
+            success: function (data) {
+                //清空数据
+                $("#list-content").html('');
+                //追加数据
+                $.each(data, function (i, dom) {
+                    //一个dom就是一个新闻对象
+//                    $("#list-content").append("<tr><td>"+ dom.id + "</td><td><a onclick='update("+dom.id+")'>"+dom.district+"</a>" + "</td><td>" + dom.monitorTime + "</td><td>" + dom.pm10 + "</td><td >" + dom.pm25 + "</td><td>"+
+//                            dom.monitoringStation+"</td></tr>");
+                    $("#list-content").append("<tr><td>"+ dom.id + "</td><td>"+dom.url+ "</td></tr>");
+                });
+                $("tr:odd").css("background","pink");
+            }
+        });
+    };
+
+
+
+
+
+    function update(id) {
+        $("#update").show();
+        $("#list").hide();
+        $.ajax({
+            url:'/goUpdatePage',
+            type:"post",
+            data:{"id":id},
+            success:function(data){
+                $("[name=id]").val(data.id);
+                $("[name=district]").val(data.district);
+                $("[name=monitorTime]").val(data.monitorTime);
+                $("[name=pm10]").val(data.pm10);
+                $("[name=pm25]").val(data.pm25);
+                $("[name=monitoringStation]").val(data.monitoringStation);
+            }
+        });
+
+    }
+
+    function fenxi(url) {
+        var data = {
+            "url":url
+        };
+//        $("#update").show();
+//        $("#list").hide();
+        $.ajax({
+            url:'/fenxi',
+            type:"post",
+            data:JSON.stringify(data),
+            dataType:"json",
+            success:function(data){
+                $("[name=id]").val(data.id);
+                $("[name=district]").val(data.district);
+                $("[name=monitorTime]").val(data.monitorTime);
+                $("[name=pm10]").val(data.pm10);
+                $("[name=pm25]").val(data.pm25);
+                $("[name=monitoringStation]").val(data.monitoringStation);
+            }
+        });
+
+    }
+
+
+</script>
+<center>
+    <div id="update">
+        <h2>空气质量信息维护页面</h2>
+        <form method="post" action="/updateAir">
+            <input type="hidden" name="id"/>
+            <p>监测区域: <select name="district">
+
+                <option value="0">不限</option>
+                <option value="西城区">西城区</option>
+                <option value="东城区">东城区</option>
+                <option value="海淀区">海淀区</option>
+                <option value="丰台区">丰台区</option>
+            </select></p>
+            <p>监测日期: <input type="text" name="monitorTime" /></p>
+            <p>PM10值: <input type="text" name="pm10" /></p>
+            <p>PM2.5值: <input type="text" name="pm25" /></p>
+            <p>监测站: <input type="text"  name="monitoringStation"/></p>
+            <input type="submit" value="更新"/>
+            <input type="button" onclick="javascript:$('#list').show();$('#update').hide()" value="返回"/>
+        </form>
+
+    </div>
+</center>
+</body>
+</html>

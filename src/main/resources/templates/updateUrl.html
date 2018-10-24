@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <style type="text/css">
+        #box{
+            width:30%;
+            margin: 0px auto;
+        }
+    </style>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+<div id="box">
+    <h2>空气质量信息维护页面</h2>
+    <form method="post" action="/updateAir">
+        <input type="hidden" name="id" value="${air.id}"/>
+        <p>监测区域: <select name="district">
+
+            <option value="0">不限</option>
+            <option value="西城区">西城区</option>
+            <option value="东城区">东城区</option>
+            <option value="海淀区">海淀区</option>
+            <option value="丰台区">丰台区</option>
+        </select></p>
+        <p>监测日期: <input type="text"value="${air.monitorTime}"/></p>
+        <p>PM10值: <input type="text"value="${air.pm10}"/></p>
+        <p>PM2.5值: <input type="text"value="${air.pm25}"/></p>
+        <p>监测站: <input type="text"value="${air.monitoringStation}"/></p>
+        <input type="submit" value="更新"/>
+        <input type="button" value="返回"/>
+    </form>
+</div>
+
+
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

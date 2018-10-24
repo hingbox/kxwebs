@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.3.min.js}"></script>
+    <style type="text/css">
+        #box{
+            width:30%;
+            margin: 0px auto;
+        }
+    </style>
+    <script type="text/javascript">
+        function checkInfo() {
+//            var district=$("[name=district]").val();
+//            var monitorTime=$("[name=monitorTime]").val();
+//            var pm10temp=$("[name=pm10]").val();
+//            var pm10=parseInt(pm10temp);
+//            var pm25temp=$("[name=pm25]").val();
+//            var pm25=parseInt(pm25temp);
+//            var monitoringStation=$("[name=monitoringStation]").val();
+              var url = $("#url").val();
+            if(url==""){
+                alert("url不能为空");
+                return false;
+            }
+            if(pm10temp==""){
+                alert("pm10的值不能为空");
+                return false;
+            }
+            var reg=/^\d+$/;
+            if(!reg.test(pm10)){
+                alert('pm10只能为正整数');
+                return false;
+            }
+
+            if(pm25temp==""){
+                alert("pm25不能为空");
+                return false;
+            }
+            if(monitoringStation==""){
+                alert("监测站不能为空");
+                return false;
+            }
+            if(district=="不限"){
+                alert("监测区域不能选择不限");
+                return false;
+            }
+            return true;
+        }
+
+        $(function () {
+            $("#form1").submit(function () {
+                return checkInfo();
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="box">
+    <h2>添加空气质量信息</h2>
+    <form id="form1" method="post" action="/addUrl">
+        <!--<p>监测区域: <select name="district">-->
+            <!--<option value="不限">不限</option>-->
+            <!--<option value="西城区">西城区</option>-->
+            <!--<option value="东城区">东城区</option>-->
+            <!--<option value="海淀区">海淀区</option>-->
+            <!--<option value="丰台区">丰台区</option>-->
+        <!--</select></p>-->
+        <!--<p>监测日期: <input type="text"name="monitorTime"/></p>-->
+        <!--<p>PM10值: <input type="text"name="pm10"/></p>-->
+        <!--<p>PM2.5值: <input type="text"name="pm25"/></p>-->
+        <p>Url: <input type="text"name="url" id="url"/></p>
+        <input type="submit" value="提交"/>
+    </form>
+</div>
+
+
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

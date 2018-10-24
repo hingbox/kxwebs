@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.webs.dao.IUrlDao" >
+
+    <!--01.查询所有记录-->
+    <select id="findAll" resultType="com.example.webs.entity.UrlModel">
+        select * from t_url
+    </select>
+
+    <insert id="addUrl">
+        insert into t_url(url) values(#{url})
+    </insert>
+
+    <!--修改-->
+    <update id="updateUrl">
+        update t_url set url=#{url} where id=#{id}
+    </update>
+    <!--按条件查询-->
+    <select id="findUrlByCondition" resultType="com.example.webs.entity.UrlModel">
+        select * from t_url
+        <where>
+            <if test='url!="0"'>
+                url=#{url}
+            </if>
+        </where>
+    </select>
+    <!--查询单项-->
+    <select id="selectOneById" resultType="com.example.webs.entity.UrlModel">
+        select * from t_url where id=#{id}
+    </select>
+</mapper>
