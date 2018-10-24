@@ -19,7 +19,7 @@
 //            var pm25temp=$("[name=pm25]").val();
 //            var pm25=parseInt(pm25temp);
 //            var monitoringStation=$("[name=monitoringStation]").val();
-              var url = $("#url").val();
+              var url = $("#keyword").val();
             if(url==""){
                 alert("url不能为空");
                 return false;
@@ -58,8 +58,8 @@
 </head>
 <body>
 <div id="box">
-    <h2>添加url</h2>
-    <form id="form1" method="post" action="/addUrl">
+    <h2>添加关键字</h2>
+    <form id="form1" method="post" action="/addKeyword">
         <!--<p>监测区域: <select name="district">-->
             <!--<option value="不限">不限</option>-->
             <!--<option value="西城区">西城区</option>-->
@@ -70,7 +70,7 @@
         <!--<p>监测日期: <input type="text"name="monitorTime"/></p>-->
         <!--<p>PM10值: <input type="text"name="pm10"/></p>-->
         <!--<p>PM2.5值: <input type="text"name="pm25"/></p>-->
-        <p>Url: <input type="text"name="url" id="url"/></p>
+        <p>关键字: <input type="text"name="keyword" id="keyword"/></p>
         <input type="submit" value="提交"/>
     </form>
 </div>

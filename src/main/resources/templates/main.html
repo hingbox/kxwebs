@@ -33,9 +33,14 @@
         <!--</select>-->
         <!--<input type="text" id="url"/>-->
         <!--<input type="button" onclick="myselect()" value="查找"/>-->
-        <input type="text" id="url"/>
-        <input type="button" onclick="fenxi()" value="分析"/>
-        <a href="/goAddPage">添加</a>
+        <div style="width: 300px;height: 300px;">
+            <p>url:<input type="text" id="url"/></p>
+            <p>关键字：<input type="text" id="keyword"/></p>
+            <input type="button" onclick="fenxi()" value="分析"/>
+        </div>
+
+        <a href="/goAddPage">添加url</a>
+        <a href="/goAddKeywordPage">添加关键字</a>
     </caption>
     <thead>
     <tr class="t_head">
@@ -121,9 +126,13 @@
 
     }
 
-    function fenxi(url) {
+
+    function fenxi() {
+        var url =$("#url").val();
+        var keyword = $("#keyword").val()
         var data = {
-            "url":url
+            "url":url,
+            "keyword":keyword
         };
 //        $("#update").show();
 //        $("#list").hide();
@@ -132,6 +141,7 @@
             type:"post",
             data:JSON.stringify(data),
             dataType:"json",
+            contentType : 'application/json',
             success:function(data){
                 $("[name=id]").val(data.id);
                 $("[name=district]").val(data.district);

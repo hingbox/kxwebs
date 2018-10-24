@@ -1,10 +1,12 @@
 package com.example.webs.controller;
 
+import com.example.webs.entity.PictureModel;
 import com.example.webs.entity.UrlModel;
+import com.example.webs.service.IPictureService;
 import com.example.webs.service.IUrlService;
-import org.json.JSONObject;
+import com.example.webs.test.PhantomTools;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: webs
@@ -35,6 +36,9 @@ public class UrlController{
     //@Resource(name = "urlService")
     @Autowired
     private IUrlService urlService;
+
+    @Autowired
+    private IPictureService pictureService;
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -89,37 +93,30 @@ public class UrlController{
     }
 
     //分析
+    //produces = "application/json;charset=UTF-8"
     @RequestMapping(value="/fenxi",method = {RequestMethod.POST,RequestMethod.GET},produces = "application/json;charset=UTF-8")
+    @ResponseBody
     public String fenxi(@RequestBody UrlModel model, Model modelData) throws Exception {
         String url = model.getUrl();
+        String keywrod = model.getKeyword();
         //得到url地址  请求
-        String reqJsonStr = "{\"url\":"+url+"}";
-        HttpHeaders headers = new HttpHeaders(); headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<String>(reqJsonStr,headers);
-        ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
-
-        JSONObject responseBody  = new JSONObject(resp.getBody());
-        modelData.addAttribute("erroMsg","添加失败");
-        return responseBody.toString();
-
-        //public List<UrlModel> getAll2() {
-        //restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
-//        ResponseEntity<List> responseEntity = restTemplate.getForEntity(url, List.class);
-//        //HttpHeaders headers = responseEntity.getHeaders();
-//        HttpStatus statusCode = responseEntity.getStatusCode();
-//        int code = statusCode.value();
-
-
-//        //RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
-//        ResponseEntity<Map> resp = restTemplate.exchange(url, HttpMethod.POST, null, Map.class);
-//       // c = restTemplate.getForObject(url, UrlModel.class);
-//        JSONObject responseBody  = new JSONObject(resp.getBody());
-//        return responseBody.toString();
-
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class);
+        String body = responseEntity.getBody().toString();
+        int result = body.indexOf(keywrod);
+        if (result>0){
+            //生成url
+            PhantomTools.printUrlScreen2jpg(url,keywrod);
+            //同时存一份mysql中
+            PictureModel pictureModel = new PictureModel();
+            pictureModel.setPicture(keywrod+".png");
+            pictureService.addPicture(pictureModel);
         }
-        //
+        System.out.println("返回的结果"+result);
+        //JSONObject responseBody  = new JSONObject(resp.getBody());
+        //modelData.addAttribute("erroMsg","添加失败");
 
-//        }
+        return "redirect:home";
+        }
+
 
 }

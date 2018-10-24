@@ -82,11 +82,12 @@ public class TestDemo {
 
     public static void html2ImageTest(){
         HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
-        String htmlstr = "<table width='654' cellpadding='0' cellspacing='0' bordercolor='#FFFFFF'><tr><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td></tr><tr><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td></tr><tr><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td></tr><tr><td><img src='http://www.apkfather.com/yhqserver/images/mdl.jpg'/></td></tr></table>";
+        String htmlstr = "<table><tr><td>dsdfsd</td><tr></table>"
+               ;
         imageGenerator.loadHtml(htmlstr);
         imageGenerator.getBufferedImage();
         imageGenerator.saveAsImage("d:/hello-world.png");
-        imageGenerator.saveAsHtmlWithMap("hello-world.html", "hello-world.png");
+        imageGenerator.saveAsHtmlWithMap("https://blog.csdn.net/kinginblue/article/details/52706155", "hello-world.png");
     }
     //判断是否有特殊字符
     public static void specialChar(String  str) {
@@ -116,11 +117,41 @@ public class TestDemo {
         return false;
     }
 
-    public static void main(String[]a){
+    public static void main(String[]a) throws IOException {
 //        SendGET("http://www.baidu.com",null);
 //        //html2ImageTest();
 //        boolean c =isSpecialChar("你好");
 //        System.out.println(c);
-        System.out.println(isContainChinese("你好发电风扇是否是234234234"));
+        //System.out.println(isContainChinese("你好发电风扇是否是234234234"));
+        html2ImageTest();
+
+        //此方法仅适用于JdK1.6及以上版本  
+//        try {
+//            Desktop.getDesktop().browse(new URL("https://blog.csdn.net/cping1982/article/details/5353049").toURI());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        Robot robot = null;
+//        try {
+//            robot = new Robot();
+//        } catch (AWTException e) {
+//            e.printStackTrace();
+//        }
+//        robot.delay(10000);
+//        Dimension d = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
+//        int width = (int)d.getWidth();
+//        int height = (int)d.getHeight();
+//        //最大化浏览器  
+//        robot.keyRelease(KeyEvent.VK_F11);
+//        robot.delay(2000);
+//        Image image = robot.createScreenCapture(new Rectangle(0,0, width,height));
+//        BufferedImage bi = new BufferedImage(width,height, BufferedImage.TYPE_INT_RGB);
+//        Graphics g = bi.createGraphics();
+//        g.drawImage(image,0,0,width,height,null);
+//        //保存图片 
+//        ImageIO.write(bi,"jpg", new File("d:/google.jpg"));
+
     }
 }

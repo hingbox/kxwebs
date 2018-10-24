@@ -15,6 +15,15 @@ package com.example.webs.entity;
 public class UrlModel {
     private String id;
     private String url;
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getId() {
         return id;
